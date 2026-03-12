@@ -2,9 +2,8 @@
 // Деплой на Railway: просто положи этот файл + package.json в GitHub репо
 
 const { createClient } = require('@supabase/supabase-js');
-const SimplePeer = require('simple-peer');
+const { SimplePeer } = require('node-datachannel/polyfill');
 const fetch = require('node-fetch');
-const wrtc = require('@roamhq/wrtc');
 
 const SUPABASE_URL = 'https://nwbdbehcwthoidjulxay.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53YmRiZWhjd3Rob2lkanVseGF5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMDkwOTgsImV4cCI6MjA4Nzg4NTA5OH0.kEdCZwmfLykDeWaUdFc2pHiM3bPNb3EKGzZFmra0XAE';
@@ -116,7 +115,7 @@ ch.on('broadcast', { event: 'signal' }, ({ payload }) => {
     const rid = payload.sender;
     if (ps[rid]) { try { ps[rid].destroy(); } catch (e) {} }
 
-    const peer = new SimplePeer({ initiator: true, trickle: true, wrtc, config: ICE });
+    const peer = new SimplePeer({ initiator: true, trickle: true, config: ICE });
     ps[rid] = peer;
 
     peer.on('signal', d => {
